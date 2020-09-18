@@ -1,7 +1,7 @@
 const { v4: uuidv4 } = require("uuid")
 const schedule = require('node-schedule');
 var tokenMap = new Map()
-const dateDiff = 60 * 1000
+const dateDiff = 2 * 3600 * 1000
 function generateToken(userId) {
   var str = uuidv4()
   str = str.replace(/-/g, '')
