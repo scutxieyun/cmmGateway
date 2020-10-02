@@ -1,5 +1,12 @@
 const {verifyToken} = require("./token")
-var ignorePaths = [/\/getToken\b/]
+const l = require("../plugins/tranrules")
+var ignorePaths = [/\/getToken\b/, /\/echo/]
+/**加载百名单*/
+if (l.whitelist !== undefined && l.whitelist.length !== 0) {
+  l.whitelist.forEach(d => {
+    ignorePaths.push(d)
+  })
+}
 function validateIgnorePath(req) {
   if (ignorePaths.find((re) => {
     return re.test(req.url)
@@ -21,3 +28,6 @@ exports.cas = async function(ctx, next){
     errorMsg: '非法token'
   }
 }
+
+exports.validateIgnorePath = validateIgnorePath
+

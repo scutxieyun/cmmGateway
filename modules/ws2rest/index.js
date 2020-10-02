@@ -1,23 +1,23 @@
 const xml2js = require('xml2js')
+const { fluxPropertyMap } = require("../propertyMap")
 const parse = new xml2js.Parser({
   explicitArray: false
 })
-exports.parseXML = function (ws) {
-  xml2js.parseString(ws, function (err, result) {
-    console.log(result);
-  });
-}
 
-//出库单path
-exports.soOrderPath = [
+const soOrderPath = [
   "soapenv:Envelope",
   "soapenv:Body",
   'ws:putSalesOrderData',
   'soInfo',
   'wmsSOHeaders'
 ]
+exports.parseXML = function (ws) {
+  xml2js.parseString(ws, function (err, result) {
+    console.log(result);
+  });
+}
 
-exports.parseFluxSoap = function(msg, path) {
+function parseFluxSoap(msg, path) {
   return new Promise((resolve, reject) => {
     parse.parseString(msg, function(err, result){
       if (!err) {// && result["soapenv:Envelope"] !== undefined && result["soapenv:Envelope"]["soapenv:Body"] !== undefined) {
@@ -28,6 +28,19 @@ exports.parseFluxSoap = function(msg, path) {
     })
   })
 }
+
+exports.putSalesOrderDataConv = function(msg) {
+  return parseFluxSoap(msg, soOrderPath).then(d => {
+    var res = fluxPropertyMap(d)
+    var newDetails = res.detailsItem.map(d => {
+      return fluxPropertyMap(d)
+    })
+    delete res.detailsItem
+    res.details = newDetails
+    return Promise.resolve(res)
+  })
+}
+
 
 function extractOnPath(e, path) {
   var cur = e
@@ -41,3 +54,8 @@ function extractOnPath(e, path) {
   }
   return cur
 }
+
+
+exports.parseFluxSoap = parseFluxSoap
+//出库单path
+exports.soOrderPath = soOrderPath
