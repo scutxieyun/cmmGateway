@@ -11,6 +11,7 @@ if (tranRules !== undefined && tranRules.length > 0) {
     if(r.rewriteUrl !== undefined && typeof r.rewriteUrl === 'function') {
       option.proxyReqPathResolver = ctx => {
         const path = require('url').parse(ctx.url).path
+        console.log('rewite path')
         return r.rewriteUrl(path)
       }
     }

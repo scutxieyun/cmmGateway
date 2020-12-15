@@ -11,6 +11,14 @@ const soOrderPath = [
   'soInfo',
   'wmsSOHeaders'
 ]
+const asnDataPath = [
+  "soapenv:Envelope",
+  "soapenv:Body",
+  'ws:putASNData',
+  'soInfo',
+  'wmsASNHeaders'
+]
+
 exports.parseXML = function (ws) {
   xml2js.parseString(ws, function (err, result) {
     console.log(result);
@@ -30,6 +38,18 @@ function parseFluxSoap(msg, path) {
 }
 
 exports.putSalesOrderDataConv = function(msg) {
+  return parseFluxSoap(msg, soOrderPath).then(d => {
+    var res = fluxPropertyMap(d)
+    var newDetails = res.detailsItem.map(d => {
+      return fluxPropertyMap(d)
+    })
+    delete res.detailsItem
+    res.details = newDetails
+    return Promise.resolve(res)
+  })
+}
+
+exports.putAsnDataConv = function(msg) {
   return parseFluxSoap(msg, soOrderPath).then(d => {
     var res = fluxPropertyMap(d)
     var newDetails = res.detailsItem.map(d => {

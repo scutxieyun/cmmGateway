@@ -15,6 +15,7 @@ onerror(app)
 
 // middlewares
 app.use(bodyparser({
+  jsonLimit: '50mb',
   enableTypes:['json', 'form', 'text', 'xml']
 }))
 app.use(json())
