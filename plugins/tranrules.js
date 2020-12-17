@@ -1,5 +1,5 @@
-//const { putSalesOrderDataConv } = require("../modules/ws2rest")
-//const { lineschPropertyMap } = require("../modules/propertyMap")
+const { putSalesOrderDataConv, putAsnDataConv, rspToXML } = require("../modules/ws2rest")
+const { lineschPropertyMap } = require("../modules/propertyMap")
 exports.rules = [
   {
     method: 'post',
@@ -67,13 +67,18 @@ exports.rules = [
   }, 
   {
     url: '/api/wms/putasndata',
-    host: 'localhost:3000',
-    rewriteUrl: (path) => { return '/orders/api/test' },
+    host: 'http://39.108.1.180:7022',
+    rewriteUrl: (path) => { return '/wms/external/business/Interface_ERP_Import_ASN' },
     bodyFormat: (body) => {
       return putAsnDataConv(body)
     },
+    rspFormat: (rsp) => {
+      return rspToXML({
+        "ns1:putASNDataResponse":{"return":rsp}
+      })
+    },
     headerSetup: (opt) => { // 将xml转成json后，要改变下header
-      opt.headers['Content-Type'] = 'application/json'
+      opt.headers['Content-Type'] = 'application/x-www-form-urlencoded'
       return opt  
     }
   }

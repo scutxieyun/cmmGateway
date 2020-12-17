@@ -1,4 +1,4 @@
-const { parseXML, parseFluxSoap, soOrderPath, putSalesOrderDataConv } = require('./index')
+const { parseXML, parseFluxSoap, soOrderPath, putSalesOrderDataConv, rspToXML } = require('./index')
 var fs = require('fs')
 const { hasUncaughtExceptionCaptureCallback } = require('process')
 describe("test", () => {
@@ -22,4 +22,9 @@ describe("test", () => {
       console.log(d)
     })
   })
+  test('code a XML', async () => {
+    console.log(rspToXML({
+      "ns1:putASNDataResponse":{"return":{resultCode:0, msg: 'success'}}}))
+  })
 })
+

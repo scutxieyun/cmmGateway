@@ -10,19 +10,27 @@ if (tranRules !== undefined && tranRules.length > 0) {
     }
     if(r.rewriteUrl !== undefined && typeof r.rewriteUrl === 'function') {
       option.proxyReqPathResolver = ctx => {
+        console.log('rewrite target')
         const path = require('url').parse(ctx.url).path
-        console.log('rewite path')
-        return r.rewriteUrl(path)
+        return r.rewriteUrl(path, ctx)
       }
     }
     if (r.bodyFormat !== undefined && typeof r.bodyFormat === 'function') {
       option.proxyReqBodyDecorator = (bodyContent, ctx) => {
-        return r.bodyFormat(bodyContent)
+      console.log('reformat body')
+      return r.bodyFormat(bodyContent)
       }
     }
     if (r.headerSetup !== undefined && typeof r.headerSetup === 'function') {
       option.proxyReqOptDecorator = (proxyReqOpts, cxt) => {
+        console.log('chg header')
         return r.headerSetup(proxyReqOpts)
+      }
+    }
+    if (r.rspFormat !== undefined && typeof r.rspFormat === 'function') {
+      option.userResDecorator = (proxyRes, proxyResData, cxt) => {
+        console.log('reformat response')
+        return r.rspFormat(ProxyRes)
       }
     }
     if (r.method === 'get') {

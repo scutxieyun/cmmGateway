@@ -9,6 +9,7 @@ const { cas } = require('./modules/cas')
 const index = require('./routes/index')
 const users = require('./routes/users')
 const core = require('./routes/core')
+const fluxgw = require('./routes/fluxgw')
 const token = require('./routes/token')
 // error handler
 onerror(app)
@@ -39,6 +40,7 @@ app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
 app.use(core.routes(), index.allowedMethods())
 app.use(token.routes(), users.allowedMethods())
+app.use(fluxgw.routes(), fluxgw.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
