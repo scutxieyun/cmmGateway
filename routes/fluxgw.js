@@ -84,18 +84,18 @@ function handlePutSalesOrderData(xmlJs, ctx) {
   res['$1'] = JSON.stringify(res.details)
   delete res.details
   const params = new url.URLSearchParams(res)
-  console.log(params)
-  return axios.post("http://39.108.1.180:7022/wms/external/business/Interface_ERP_Import_ASN", 
+  console.log(params + ' saleorders')
+  return axios.post("http://39.108.1.180:7022/wms/external/business/Interface_ERP_Import_SaleOrder", 
     params).then(d => {
       if (d.data !== undefined && d.data.Success === true) {
-          ctx.response.body = rspToXML({"ns1:putASNDataResponse":{"return":{
+          ctx.response.body = rspToXML({"ns1:putSODataResponse":{"return":{
             returnCode: '000',
             returnDesc: '成功',
             returnFlag: 1
           }
          }})
       } else {
-          ctx.response.body = rspToXML({"ns1:putASNDataResponse":{"return":{
+          ctx.response.body = rspToXML({"ns1:putSODataResponse":{"return":{
             returnCode: '0001',
             returnDesc: d.data.Msg,
             returnFlag: 1
