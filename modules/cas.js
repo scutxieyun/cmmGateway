@@ -15,7 +15,9 @@ function validateIgnorePath(req) {
 }
 
 exports.cas = async function(ctx, next){
-  if (validateIgnorePath(ctx.request)) {
+  await next()
+  return
+  /*if (validateIgnorePath(ctx.request)) {
     await next()
     return
   }
@@ -26,7 +28,7 @@ exports.cas = async function(ctx, next){
   ctx.response.body = {
     resultCode: '401',
     errorMsg: '非法token'
-  }
+  }*/
 }
 
 exports.validateIgnorePath = validateIgnorePath

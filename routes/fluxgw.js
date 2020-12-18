@@ -84,7 +84,7 @@ function handlePutSalesOrderData(xmlJs, ctx) {
   res['$1'] = JSON.stringify(res.details)
   delete res.details
   const params = new url.URLSearchParams(res)
-  console.log(params + ' saleorders')
+  console.log(params)
   return axios.post("http://39.108.1.180:7022/wms/external/business/Interface_ERP_Import_SaleOrder", 
     params).then(d => {
       if (d.data !== undefined && d.data.Success === true) {
