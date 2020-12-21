@@ -2,7 +2,7 @@ const router = require('koa-router')()
 const xml2js = require('xml2js')
 const axios = require('axios')
 const url = require('url');
-
+const config = require('../modules/config')
 const { putCustDataFitTrans, putSKUDataFitTrans, putAsnDataFitTrans, putSalesOrderDataFitTrans, rspToXML, parseFluxSoap, extractSoapMethod } = require("../modules/ws2rest")
 const parse = new xml2js.Parser({
   explicitArray: false
@@ -10,6 +10,19 @@ const parse = new xml2js.Parser({
 
 router.post('/datahubWeb/WMSSOAP/FLUXWS', async (ctx, next) => {
   const xmlBody = ctx.request.body
+  if (config.forceFlux) {
+    return transToFlux(xmlBody).then(d => {
+      ctx.response.body = d
+    }).catch(d => {
+      console.log(d)
+      ctx.response.body = rspToXML({"ns1:putCustDataResponse":{"return":{
+            returnCode: '001',
+            returnDesc: d,
+            returnFlag: 1
+          }
+      }})
+    })
+  }
   //铁定是xml，转一下看
   return parseFluxSoap(xmlBody, []).then(res => {
     const sm = extractSoapMethod(res)
@@ -31,6 +44,27 @@ router.post('/datahubWeb/WMSSOAP/FLUXWS', async (ctx, next) => {
     ctx.response.body = "错误" + msg
   })
 })
+
+function transToFlux(xmlBody, ctx) {
+  return axios.post(config.fluxHost + '/datahubWeb/WMSSOAP/FLUXWS', xmlBody, {
+    headers: {
+      'Content-Type': 'text/xml'
+    }
+  }).then(d => {
+    if (d.status === 200 && d.data !== undefined) {
+      return Promise.resolve(d.data)
+    } else {
+      return Promise.reject('flux 系统错误')
+    }
+  }).catch(d => {
+    if (typeof d === 'string') {
+      return Promise.reject(d)
+    } else {
+      console.log(d)
+      return Promise.reject('系统错误')
+    }
+  })
+}
 
 function handlePutCustData(xmljs, ctx) {
   const res = putCustDataFitTrans(xmljs)
