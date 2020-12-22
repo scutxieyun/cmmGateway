@@ -105,6 +105,7 @@ function handlePutSKUData(xmljs, ctx){
           }
          }})
       } else {
+          console.log(d) 
           ctx.response.body = rspToXML({"ns1:putSKUDataResponse":{"return":{
             returnCode: '0001',
             returnDesc: d.data.Msg,
