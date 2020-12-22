@@ -60,7 +60,7 @@ function transToFlux(xmlBody, ctx) {
       console.log(d)
     }
     ctx.response.body = rspToXML({"ns1:putCustDataResponse":{"return":{
-            returnCode: '001',
+            returnCode: '0001',
             returnDesc: err,
             returnFlag: 0
           }
@@ -76,7 +76,7 @@ function handlePutCustData(xmljs, ctx) {
     params).then(d => {
       if (d.data !== undefined && d.data.Success === true) {
           ctx.response.body = rspToXML({"ns1:putCustDataResponse":{"return":{
-            returnCode: '000',
+            returnCode: '0000',
             returnDesc: '成功',
             returnFlag: 1
           }
@@ -99,7 +99,7 @@ function handlePutSKUData(xmljs, ctx){
     params).then(d => {
       if (d.data !== undefined && d.data.Success === true) {
           ctx.response.body = rspToXML({"ns1:putSKUDataResponse":{"return":{
-            returnCode: '000',
+            returnCode: '0000',
             returnDesc: '成功',
             returnFlag: 1
           }
@@ -107,10 +107,11 @@ function handlePutSKUData(xmljs, ctx){
       } else {
           console.log(d) 
           ctx.response.body = rspToXML({"ns1:putSKUDataResponse":{"return":{
-            returnCode: '0001',
+            returnCode: '001',
             returnDesc: d.data.Msg,
             returnFlag: 0
           }
+          console.log(ctx.response.body)
          }})
       }
     })
@@ -152,7 +153,7 @@ function handlePutASNData(xmljs, ctx) {
     params).then(d => {
       if (d.data !== undefined && d.data.Success === true) {
           ctx.response.body = rspToXML({"ns1:putASNDataResponse":{"return":{
-            returnCode: '000',
+            returnCode: '0000',
             returnDesc: '成功',
             returnFlag: 1
           }
