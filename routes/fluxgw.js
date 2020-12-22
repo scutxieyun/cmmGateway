@@ -105,14 +105,14 @@ function handlePutSKUData(xmljs, ctx){
           }
          }})
       } else {
-          console.log(d) 
-          ctx.response.body = rspToXML({"ns1:putSKUDataResponse":{"return":{
+        console.log(d) 
+        ctx.response.body = rspToXML({"ns1:putSKUDataResponse":{"return":{
             returnCode: '001',
             returnDesc: d.data.Msg,
             returnFlag: 0
           }
-          console.log(ctx.response.body)
-         }})
+        }})
+        console.log(ctx.response.body)
       }
     })
 }
