@@ -62,7 +62,7 @@ function transToFlux(xmlBody, ctx) {
     ctx.response.body = rspToXML({"ns1:putCustDataResponse":{"return":{
             returnCode: '001',
             returnDesc: err,
-            returnFlag: 1
+            returnFlag: 0
           }
     }})
   })
@@ -85,7 +85,7 @@ function handlePutCustData(xmljs, ctx) {
           ctx.response.body = rspToXML({"ns1:putCustDataResponse":{"return":{
             returnCode: '0001',
             returnDesc: d.data.Msg,
-            returnFlag: 1
+            returnFlag: 0
           }
          }})
       }
@@ -109,7 +109,7 @@ function handlePutSKUData(xmljs, ctx){
           ctx.response.body = rspToXML({"ns1:putSKUDataResponse":{"return":{
             returnCode: '0001',
             returnDesc: d.data.Msg,
-            returnFlag: 1
+            returnFlag: 0
           }
          }})
       }
@@ -135,7 +135,7 @@ function handlePutSalesOrderData(xmlJs, ctx) {
           ctx.response.body = rspToXML({"ns1:putSODataResponse":{"return":{
             returnCode: '0001',
             returnDesc: d.data.Msg,
-            returnFlag: 1
+            returnFlag: 0
           }
          }})
       }
@@ -161,7 +161,7 @@ function handlePutASNData(xmljs, ctx) {
           ctx.response.body = rspToXML({"ns1:putASNDataResponse":{"return":{
             returnCode: '0001',
             returnDesc: d.data.Msg,
-            returnFlag: 1
+            returnFlag: 0
           }
          }})
       }
