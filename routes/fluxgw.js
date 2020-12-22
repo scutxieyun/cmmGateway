@@ -8,6 +8,7 @@ const parse = new xml2js.Parser({
   explicitArray: false
 })
 
+console.log(config)
 router.post('/datahubWeb/WMSSOAP/FLUXWS', async (ctx, next) => {
   const xmlBody = ctx.request.body
   if (config.forceFlux) {
