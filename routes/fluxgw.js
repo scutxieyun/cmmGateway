@@ -82,13 +82,21 @@ function handlePutCustData(xmljs, ctx) {
           }
          }})
       } else {
-          ctx.response.body = rspToXML({"ns1:putCustDataResponse":{"return":{
-            returnCode: '0001',
-            returnDesc: d.data.Msg,
-            returnFlag: 0
-          }
-         }})
+        return Promise.reject(d.data.Msg)
       }
+    }).catch(e => {
+      let err = '系统错误'
+      if (typeof d === 'string') {
+        err = d
+      } else {
+        console.log(d)
+      }
+      ctx.response.body = rspToXML({"ns1:putCustDataResponse":{"return":{
+              returnCode: '0001',
+              returnDesc: err,
+              returnFlag: 0
+            }
+      }})
     })
 }
 function handlePutSKUData(xmljs, ctx){
@@ -105,15 +113,21 @@ function handlePutSKUData(xmljs, ctx){
           }
          }})
       } else {
-        console.log(d) 
-        ctx.response.body = rspToXML({"ns1:putSKUDataResponse":{"return":{
-            returnCode: '001',
-            returnDesc: d.data.Msg,
-            returnFlag: 0
-          }
-        }})
-        console.log(ctx.response.body)
+        return Promise.reject(d.data.Msg)
       }
+    }).catch(e => {
+      let err = '系统错误'
+      if (typeof d === 'string') {
+        err = d
+      } else {
+        console.log(d)
+      }
+      ctx.response.body = rspToXML({"ns1:putSKUDataResponse":{"return":{
+              returnCode: '0001',
+              returnDesc: err,
+              returnFlag: 0
+            }
+      }})
     })
 }
 
