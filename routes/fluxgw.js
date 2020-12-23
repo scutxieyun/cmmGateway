@@ -48,6 +48,7 @@ function transToFlux(xmlBody, ctx) {
     }
   }).then(d => {
     if (d.status === 200 && d.data !== undefined) {
+      console.log(d) //看看人家正确的应答长得怎样
       return ctx.response.body = d.data
     } else {
       return Promise.reject('flux 系统错误')

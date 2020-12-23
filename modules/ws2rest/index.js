@@ -130,10 +130,10 @@ exports.putAsnDataConv = function(msg) {
 exports.rspToXML = function rspToXML(rsp) {
   let builder = new xml2js.Builder();
   const wrap = {
-    "SOAPENV:Envelope":{"$":{"xmlns:soapenv":"http://schemas.xmlsoap.org/soap/envelope/",
-                              "xmlns:ws":"http://ws.webservices.services.adapter.datahub/"},
-                        "SOAPENV:Header":"",
-    "SOAPENV:Body": rsp}
+    "SOAP-ENV:Envelope":{"$":{"xmlns:SOAP-ENV":"http://schemas.xmlsoap.org/soap/envelope/",
+                              "xmlns:ns1":"http://ws.webservices.services.adapter.datahub/"},
+                        "SOAP-ENV:Header":"",
+    "SOAP-ENV:Body": rsp}
   }
   const xml = builder.buildObject(wrap);
   return xml
