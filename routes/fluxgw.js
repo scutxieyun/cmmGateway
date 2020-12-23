@@ -21,20 +21,30 @@ router.post('/datahubWeb/WMSSOAP/FLUXWS', async (ctx, next) => {
     if (config.methods4Fit.find(d => sm === d) === undefined) {
       return transToFlux(xmlBody, ctx)
     }
-    console.log('trans to fit')
+    let jsData = {}
+    let method = ''
+    let url = ''
     if (sm === 'putASNData') {
-      return handlePutASNData(res, ctx)
+      jsData = putAsnDataFitTrans(res)
+      method = 'ns:putASNData'
+      url = 'Interface_ERP_Import_ASN'
     }
     if (sm === 'putSalesOrderData') {
-      return handlePutSalesOrderData(res, ctx)
+      jsData = putSalesOrderDataFitTrans(res)
+      method = 'ns:putSODataResponse'
+      url = 'Interface_ERP_Import_SaleOrder'
     }
     if (sm === 'putSKUData') {
-      return handlePutSKUData(res, ctx)
+      jsData = putSKUDataFitTrans(res)
+      method = 'ns:putSKUDataResponse'
+      url = 'Interface_ERP_Import_Goods'
     }
     if (sm === 'putCustData') {
-      return handlePutCustData(res, ctx)
+      jsData = putCustDataFitTrans(res)
+      method = 'ns:putCustDataResponse'
+      url = 'Interface_ERP_Import_Consignee'
     }
-    return Promise.reject("不可识别的SOAP方法" + sm)
+    return transToFit(jsData, ctx, method, url)
   }).catch(msg => {
     ctx.response.body = "错误" + msg
   })
@@ -69,19 +79,50 @@ function transToFlux(xmlBody, ctx) {
   })
 }
 
-function handlePutCustData(xmljs, ctx) {
+function transToFit(jsData, ctx, soapMethod, urlPath) {
+  const params = new url.URLSearchParams(jsData)
+  console.log('trans to fit with ' + params)
+  return axios.post("http://39.108.1.180:7022/wms/external/business/" + urlPath, 
+    params).then(d => {
+      if (d.data !== undefined && d.data.Success === true) {
+          ctx.response.body = rspToXML({
+              method: soapMethod,
+              returnCode: '0000',
+              returnDesc: '成功',
+              returnFlag: 1
+          })
+      } else {
+        return Promise.reject(d.data.Msg)
+      }
+    }).catch(e => {
+      let err = '系统错误'
+      if (typeof e === 'string') {
+        err = e
+      } else {
+        console.log(e)
+      }
+      ctx.response.body = rspToXML({
+              method: soapMethod,
+              returnCode: '0001',
+              returnDesc: err,
+              returnFlag: 0
+          })
+    })
+}
+
+/*function handlePutCustData(xmljs, ctx) {
   const res = putCustDataFitTrans(xmljs)
   const params = new url.URLSearchParams(res)
   console.log(xmljs, res, params)
   return axios.post("http://39.108.1.180:7022/wms/external/business/Interface_ERP_Import_Consignee", 
     params).then(d => {
       if (d.data !== undefined && d.data.Success === true) {
-          ctx.response.body = rspToXML({"ns1:putCustDataResponse":{"return":{
-            returnCode: '0000',
-            returnDesc: '成功',
-            returnFlag: 1
-          }
-         }})
+          ctx.response.body = rspToXML({
+              method: "ns1:putCustDataResponse",
+              returnCode: '0000',
+              returnDesc: '成功',
+              returnFlag: 1
+          })
       } else {
         return Promise.reject(d.data.Msg)
       }
@@ -92,12 +133,12 @@ function handlePutCustData(xmljs, ctx) {
       } else {
         console.log(d)
       }
-      ctx.response.body = rspToXML({"ns1:putCustDataResponse":{"return":{
-              returnCode: '0001',
+      ctx.response.body = rspToXML({
+              method: "ns1:putCustDataResponse",
+              returnCode: '0000',
               returnDesc: err,
               returnFlag: 0
-            }
-      }})
+          })
     })
 }
 function handlePutSKUData(xmljs, ctx){
@@ -108,14 +149,12 @@ function handlePutSKUData(xmljs, ctx){
     params).then(d => {
       console.log(d.data)
       if (d.data !== undefined && d.data.Success === true) {
-          ctx.response.body = rspToXML(
-            {
+          ctx.response.body = rspToXML({
               method: "ns1:putSKUDataResponse",
               returnCode: '0000',
               returnDesc: '成功',
               returnFlag: 1
-            }
-         )
+          })
          console.log(ctx.response.body)
       } else {
         return Promise.reject(d.data.Msg)
@@ -127,12 +166,12 @@ function handlePutSKUData(xmljs, ctx){
       } else {
         console.log(d)
       }
-      ctx.response.body = rspToXML({"ns1:putSKUDataResponse":{"return":{
+      ctx.response.body = rspToXML({
+              method: "ns1:putSKUDataResponse",
               returnCode: '0001',
               returnDesc: err,
-              returnFlag: 0
-            }
-      }})
+              returnFlag: 1
+          })
       console.log(ctx.response.body)
     })
 }
@@ -146,20 +185,29 @@ function handlePutSalesOrderData(xmlJs, ctx) {
   return axios.post("http://39.108.1.180:7022/wms/external/business/Interface_ERP_Import_SaleOrder", 
     params).then(d => {
       if (d.data !== undefined && d.data.Success === true) {
-          ctx.response.body = rspToXML({"ns1:putSODataResponse":{"return":{
-            returnCode: '000',
+        ctx.response.body = rspToXML({
+            method: "ns1:putSODataResponse",
+            returnCode: '0000',
             returnDesc: '成功',
             returnFlag: 1
-          }
-         }})
+        })
       } else {
-          ctx.response.body = rspToXML({"ns1:putSODataResponse":{"return":{
-            returnCode: '0001',
-            returnDesc: d.data.Msg,
-            returnFlag: 0
-          }
-         }})
+        return Promise.reject(d.data.Msg)
       }
+    }).catch(e => {
+      let err = '系统错误'
+      if (typeof d === 'string') {
+        err = d
+      } else {
+        console.log(d)
+      }
+      ctx.response.body = rspToXML({
+              method: "ns1:putSODataResponse",
+              returnCode: '0001',
+              returnDesc: err,
+              returnFlag: 1
+          })
+      console.log(ctx.response.body)
     })
 }
 
@@ -179,14 +227,23 @@ function handlePutASNData(xmljs, ctx) {
           }
          }})
       } else {
-          ctx.response.body = rspToXML({"ns1:putASNDataResponse":{"return":{
-            returnCode: '0001',
-            returnDesc: d.data.Msg,
-            returnFlag: 0
-          }
-         }})
+        return Promise.reject(d.data.Msg)
       }
+    }).catch(e => {
+      let err = '系统错误'
+      if (typeof d === 'string') {
+        err = d
+      } else {
+        console.log(d)
+      }
+      ctx.response.body = rspToXML({
+              method: "ns1:putASNDataResponse",
+              returnCode: '0001',
+              returnDesc: err,
+              returnFlag: 1
+          })
+      console.log(ctx.response.body)
     })
 }
-
+*/
 module.exports = router
