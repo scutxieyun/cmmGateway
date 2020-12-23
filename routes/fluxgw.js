@@ -109,10 +109,11 @@ function handlePutSKUData(xmljs, ctx){
       if (d.data !== undefined && d.data.Success === true) {
           ctx.response.body = rspToXML({"ns1:putSKUDataResponse":{"return":{
             returnCode: '0000',
-            returnDesc: d.data.Msg,
+            returnDesc: '成功',
             returnFlag: 1
           }
          }})
+         console.log(ctx.response.body)
       } else {
         return Promise.reject(d.data.Msg)
       }
