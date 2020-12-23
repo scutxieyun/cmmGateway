@@ -127,17 +127,8 @@ exports.putAsnDataConv = function(msg) {
   })
 }
 
-exports.rspToXML = function rspToXML(rsp) {
-  let builder = new xml2js.Builder();
-  const wrap = {
-    "SOAP-ENV:Envelope":{"$":{"xmlns:SOAP-ENV":"http://schemas.xmlsoap.org/soap/envelope/",
-                              "xmlns:ns1":"http://ws.webservices.services.adapter.datahub/"},
-                        "SOAP-ENV:Header":"",
-    "SOAP-ENV:Body": rsp}
-  }
-  const xml = builder.buildObject(wrap);
-//<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-  return xml.substring(56).replace(/(\ |\n)+/g,"") //将上面的字符串去掉
+exports.rspToXML = function rspToXML(res) {
+  return `<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://ws.webservices.services.adapter.datahub/"><SOAP-ENV:Header/><SOAP-ENV:Body><${res.method}><return><returnCode>${res.returnCode}</returnCode><returnDesc>${res.returnDesc}</returnDesc><returnFlag>${res.returnFlag}</returnFlag></return></${res.method}></SOAP-ENV:Body></SOAP-ENV:Envelope>`
 }
 
 function extractOnPath(e, path) {
