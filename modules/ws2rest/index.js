@@ -136,7 +136,8 @@ exports.rspToXML = function rspToXML(rsp) {
     "SOAP-ENV:Body": rsp}
   }
   const xml = builder.buildObject(wrap);
-  return xml
+//<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  return xml.substring(56) //将上面的字符串去掉
 }
 
 function extractOnPath(e, path) {
