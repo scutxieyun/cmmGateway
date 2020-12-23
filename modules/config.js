@@ -8,12 +8,14 @@ module.exports = (function(){
   const customerNos4Fit = cust4Fit.split(',')
   const m4Fit = process.env.METHODS4Fit || 'putSKUData'
   const methods4Fit = m4Fit.split(',')
+const env = process.env.fitHost || 'test'
   return {
     forceFlux,
     fitHost,
     warehouseNos4Fit,
     customerNos4Fit,
     fluxHost,
-    methods4Fit
+    methods4Fit,
+    env
   }
 })()

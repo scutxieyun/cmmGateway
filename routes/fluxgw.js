@@ -105,10 +105,11 @@ function handlePutSKUData(xmljs, ctx){
   console.log(params)
   return axios.post("http://39.108.1.180:7022/wms/external/business/Interface_ERP_Import_Goods", 
     params).then(d => {
+      console.log(d.data)
       if (d.data !== undefined && d.data.Success === true) {
           ctx.response.body = rspToXML({"ns1:putSKUDataResponse":{"return":{
             returnCode: '0000',
-            returnDesc: '成功',
+            returnDesc: d.data.Msg,
             returnFlag: 1
           }
          }})
@@ -128,6 +129,7 @@ function handlePutSKUData(xmljs, ctx){
               returnFlag: 0
             }
       }})
+      console.log(ctx.response.body)
     })
 }
 
