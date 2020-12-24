@@ -7,6 +7,7 @@ module.exports = (function(){
   const cust4Fit = process.env.CUSTOMER4Fit || 'PAGODA'
   const customerNos4Fit = cust4Fit.split(',')
   const m4Fit = process.env.METHODS4Fit || 'putSKUData,putCustData,putSalesOrderData,putASNData'
+  const logger = process.env.LOGCFG || "*"
   const methods4Fit = m4Fit.split(',')
 const env = process.env.fitHost || 'test'
   return {
@@ -16,6 +17,7 @@ const env = process.env.fitHost || 'test'
     customerNos4Fit,
     fluxHost,
     methods4Fit,
-    env
+    env,
+    logger
   }
 })()

@@ -7,7 +7,7 @@ logtube.setup({
   project: "fluxwms-gw",   // 设置项目名，只允许数字，- 和 _
   env: config.env,              // 设置项目环境名，一般为 dev, test, uat/staging, prod
   console: {                // 命令行输出
-    topics: ["*"],          // 设置要通过命令行输出的主题，"*" 代表全部主题
+    topics: [config.logger],          // 设置要通过命令行输出的主题，"*" 代表全部主题
   },
   file: {                   // 日志文件输出
     topics: ["info", "err", "warn"], // 设置要通过日志文件输出的主题, "*" 代表全部主题

@@ -3,10 +3,12 @@ const xml2js = require('xml2js')
 const axios = require('axios')
 const url = require('url');
 const config = require('../modules/config')
+const { getLogger } = require('../modules/common/logger')
 const { putCustDataFitTrans, putSKUDataFitTrans, putAsnDataFitTrans, putSalesOrderDataFitTrans, rspToXML, parseFluxSoap, extractSoapMethod } = require("../modules/ws2rest")
 const parse = new xml2js.Parser({
   explicitArray: false
 })
+const logger = getLogger()
 
 console.log(config)
 router.post('/datahubWeb/WMSSOAP/FLUXWS', async (ctx, next) => {
@@ -16,6 +18,8 @@ router.post('/datahubWeb/WMSSOAP/FLUXWS', async (ctx, next) => {
   }
   //铁定是xml，转一下看
   return parseFluxSoap(xmlBody, []).then(res => {
+    logger.debug(xmlBody)
+    logger.debug(JSON.stringify(res))
     const sm = extractSoapMethod(res)
     if (sm === undefined) return Promise.reject("soap method 不规范")
     if (config.methods4Fit.find(d => sm === d) === undefined) {
@@ -85,6 +89,7 @@ function transToFit(jsData, ctx, soapMethod, urlPath) {
   return axios.post("http://39.108.1.180:7022/wms/external/business/" + urlPath, 
     params).then(d => {
       if (d.data !== undefined && d.data.Success === true) {
+          logger.debug(d.data)
           ctx.response.body = rspToXML({
               method: soapMethod,
               returnCode: '0000',
@@ -92,7 +97,7 @@ function transToFit(jsData, ctx, soapMethod, urlPath) {
               returnFlag: 1
           })
       } else {
-        console.log(d.data)
+        logger.debug(d.data)
         return Promise.reject(d.data.Msg)
       }
     }).catch(e => {
