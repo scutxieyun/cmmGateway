@@ -92,6 +92,8 @@ function putSalesOrderDataFitTrans(xmljs) {
   })
   delete res.detailsItem
   res.details = newDetails
+  res['$1'] = JSON.stringify(res.details)
+  delete res.details
   return res
 }
 
@@ -109,6 +111,8 @@ function putAsnDataFitTrans(xmljs) {
   })
   delete res.detailsItem
   res.details = newDetails
+  res['$1'] = JSON.stringify(res.details)
+  delete res.details
   return res
 }
 
