@@ -19,7 +19,6 @@ router.post('/datahubWeb/WMSSOAP/FLUXWS', async (ctx, next) => {
   //铁定是xml，转一下看
   return parseFluxSoap(xmlBody, []).then(res => {
     logger.debug(xmlBody)
-    logger.debug(JSON.stringify(res))
     const sm = extractSoapMethod(res)
     if (sm === undefined) return Promise.reject("soap method 不规范")
     if (config.methods4Fit.find(d => sm === d) === undefined) {
@@ -35,7 +34,7 @@ router.post('/datahubWeb/WMSSOAP/FLUXWS', async (ctx, next) => {
     }
     if (sm === 'putSalesOrderData') {
       jsData = putSalesOrderDataFitTrans(res)
-      method = 'ns:putSODataResponse'
+      method = 'ns:putSalesOrderDataResponse'
       url = 'Interface_ERP_Import_SaleOrder'
     }
     if (sm === 'putSKUData') {
@@ -86,6 +85,7 @@ function transToFlux(xmlBody, ctx) {
 function transToFit(jsData, ctx, soapMethod, urlPath) {
   const params = new url.URLSearchParams(jsData)
   console.log('trans to fit with ')
+  logger.debug(JSON.stringify(jsData))
   return axios.post("http://39.108.1.180:7022/wms/external/business/" + urlPath, 
     params).then(d => {
       if (d.data !== undefined && d.data.Success === true) {
