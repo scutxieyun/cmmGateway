@@ -94,8 +94,8 @@ function transToFit(jsData, ctx, soapMethod, urlPath) {
               returnCode: '0000',
               returnDesc: '成功',
               returnFlag: 1
-          logger.debug(ctx.response.body)
           })
+          logger.debug(ctx.response.body)
       } else {
         logger.debug(d.data)
         return Promise.reject(d.data.Msg)
