@@ -81,7 +81,7 @@ function transToFlux(xmlBody, ctx) {
 
 function transToFit(jsData, ctx, soapMethod, urlPath) {
   const params = new url.URLSearchParams(jsData)
-  console.log('trans to fit with ' + params)
+  console.log('trans to fit with ')
   return axios.post("http://39.108.1.180:7022/wms/external/business/" + urlPath, 
     params).then(d => {
       if (d.data !== undefined && d.data.Success === true) {
@@ -92,6 +92,7 @@ function transToFit(jsData, ctx, soapMethod, urlPath) {
               returnFlag: 1
           })
       } else {
+        console.log(d.data)
         return Promise.reject(d.data.Msg)
       }
     }).catch(e => {
@@ -107,6 +108,7 @@ function transToFit(jsData, ctx, soapMethod, urlPath) {
               returnDesc: err,
               returnFlag: 0
           })
+      console.log(ctx.response.body)
     })
 }
 
