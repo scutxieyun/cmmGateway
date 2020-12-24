@@ -89,12 +89,12 @@ function transToFit(jsData, ctx, soapMethod, urlPath) {
   return axios.post("http://39.108.1.180:7022/wms/external/business/" + urlPath, 
     params).then(d => {
       if (d.data !== undefined && d.data.Success === true) {
-          logger.debug(d.data)
           ctx.response.body = rspToXML({
               method: soapMethod,
               returnCode: '0000',
               returnDesc: '成功',
               returnFlag: 1
+          logger.debug(ctx.response.body)
           })
       } else {
         logger.debug(d.data)
