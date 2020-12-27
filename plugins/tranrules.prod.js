@@ -18,9 +18,8 @@ exports.rules = [
   },
   {
     method: 'post',
-    url: '/api/redash/query/56',
-    host: 'dcbigscreen:3000',
-    //rewriteUrl: (path) => {return '/api/redash/query/56'} 不起作用，得研究下
+    url: '/api/xmxsku/query',
+    rewriteUrl: (path) => {return '/api/redash/query/56'}
   },
   {
     method: 'post',
