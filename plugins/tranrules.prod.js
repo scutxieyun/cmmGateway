@@ -18,11 +18,6 @@ exports.rules = [
   },
   {
     method: 'post',
-    url: '/api/xmxsku/query',
-    rewriteUrl: (path) => {return '/api/redash/query/56'}
-  },
-  {
-    method: 'post',
     url: '/api/redash/query/47',
     host: 'dcbigscreen:3000'
   },

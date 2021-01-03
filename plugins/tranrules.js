@@ -15,12 +15,23 @@ exports.rules = [
     method: 'post',
     url: '/api/redash/query/41',
     host: 'dcbigscreen:3000'
+    //wms/runMUSsql/querywmsv1fruitbatch/run
+  },
+  {
+    method: 'post',
+    url: '/api/redash/query/41/new',
+    host: 'localhost:3002',
+    rewriteUrl: (path) => {return '/wms/runMUSsql/querywmsv1fruitbatch/run'}
+  },
+  {
+    method: 'post',
+    url: '/wms/runMUSsql/*',
+    host: 'wmssqlapi:3002'
   },
   {
     method: 'post',
     url: '/api/redash/query/56',
     host: 'dcbigscreen:3000',
-    //rewriteUrl: (path) => {return '/api/redash/query/56'} 不起作用，得研究下
   },
   {
     method: 'post',
