@@ -6,6 +6,12 @@ exports.rules = [
     url: '/linesch/driverassignment/query',
     host: '10.8.4.107:80'
   },
+  {//给到黄生帅的测试环境，对着排线test2
+    method: 'post',
+    url: '/linesch/driverassignment/query-test',
+    host: 'tms-test:3000',
+    rewriteUrl: (path) => {return '/linesch/driverassignment/query'}
+  },
   {
     method: 'post',
     url: '/api/linesch/transinvs/querydriver',
@@ -20,8 +26,14 @@ exports.rules = [
   {
     method: 'post',
     url: '/api/redash/query/41/new',
-    host: 'localhost:3002',
+    host: 'wmssqlapi:3002',
     rewriteUrl: (path) => {return '/wms/runMUSsql/querywmsv1fruitbatch/run'}
+  },
+  {
+    method: 'post',
+    url: '/api/redash/query/51/new',
+    host: 'wmssqlapi:3002',
+    rewriteUrl: (path) => {return '/wms/runMUSsql/querywmsv1fruitbatchV2/run'}
   },
   {
     method: 'post',
