@@ -1,11 +1,11 @@
 //const { putSalesOrderDataConv } = require("../modules/ws2rest")
 //const { lineschPropertyMap } = require("../modules/propertyMap")
 exports.rules = [
-  {
-    method: 'post',
+  /*{
+    method: 'post', //原来提供给黄生帅的，现在可以删除
     url: '/linesch/driverassignment/query',
     host: '10.8.4.107:80'
-  },
+  },*/
   {
     method: 'post',
     url: '/api/linesch/transinvs/querydriver',

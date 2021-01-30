@@ -19,7 +19,12 @@ exports.cas = async function(ctx, next){
     await next()
     return
   }
-  if (ctx.headers.token !== undefined && verifyToken(ctx.headers.token)) {
+  if ((ctx.headers.token !== undefined && verifyToken(ctx.headers.token))) {
+    await next()
+    return
+  }
+  if (isLocalRequest(ctx.ip)) {
+    console.log("内网请求，跳过")
     await next()
     return
   }
@@ -27,6 +32,27 @@ exports.cas = async function(ctx, next){
     resultCode: '401',
     errorMsg: '非法token'
   }
+}
+
+function isLocalRequest(ipAddr) {
+  console.log(ipAddr)
+  const addrs = ipAddr.split(':')
+  let ip = ''
+  if (addrs.length >= 4) {
+    //含IPv6
+    ip = addrs[3]
+  } else {
+    ip = addrs[0]
+  }
+  const ipParts = ip.split('.')
+  if (ipParts.length === 4 && (ipParts[0] === '10' || (ipParts[0] === '192' && ipParts[1] === '168') || (ip === '127.0.0.1'))) {
+    return true
+  }
+  if (ipAddr === '::1') {
+    return true
+  }
+  return false
+  
 }
 
 exports.validateIgnorePath = validateIgnorePath
