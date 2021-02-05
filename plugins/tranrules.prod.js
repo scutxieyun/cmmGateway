@@ -1,11 +1,11 @@
 //const { putSalesOrderDataConv } = require("../modules/ws2rest")
 //const { lineschPropertyMap } = require("../modules/propertyMap")
 exports.rules = [
-  /*{
-    method: 'post', //原来提供给黄生帅的，现在可以删除
+  {
+    method: 'post', //给到黄生帅智能锁
     url: '/linesch/driverassignment/query',
     host: '10.8.4.107:80'
-  },*/
+  },
   {
     method: 'post',
     url: '/api/linesch/transinvs/querydriver',
@@ -21,7 +21,7 @@ exports.rules = [
     method: 'post',
     url:'/api/carton/getConsigneesDropId',//给扫码APP获取司机当天应扫码任务
     host: 'wmssqlapi-b:3002', //为了不影响大生鲜订单轮询，使用B服务
-    rewriteUrl: (path) => {return '/wms/runMUSsql/getConsigneesDropId/run'}
+    rewriteUrl: (path) => {return '/wms/runMUSsql/getConsigneesDropIdWOPagoda/run'} //0203 为了减少司机抵触，只返回大生鲜框码
   },
   {
     method: 'post',

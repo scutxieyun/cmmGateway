@@ -13,6 +13,10 @@ exports.rules = [
     //wms/runMUSsql/querywmsv1fruitbatch/run
   },
   {
+    url: '/datahubWeb/WMSSOAP/FLUXWS', //因为专用富勒网关不完善，用这个透明网关临时替换
+    host: 'http://flux-wms.test.pagoda.com.cn:8081'
+  },
+  {
     method: 'post',
     url: '/api/redash/query/41/new',
     host: 'wmssqlapi:3002',
@@ -48,37 +52,25 @@ exports.rules = [
   },
   {
     method: 'post',
-    url:'/api/carton/getConsigneesDropIdWOPagoda',//给扫码APP获取司机当天应扫码任务, 只有大生鲜
-    host: 'wmssqlapi:3002',
-    rewriteUrl: (path) => {return '/wms/runMUSsql/getConsigneesDropIdWOPagoda/run'}
-  },
-  {
-    method: 'post',
-    url:'/api/carton/getConsigneesDropIdPostTag',//给扫码APP获取司机当天应扫码任务， 广州模式
-    host: 'wmssqlapi:3002',
-    rewriteUrl: (path) => {return '/wms/runMUSsql/getConsigneesDropIdPostTag/run'}
-  },
-  {
-    method: 'post',
     url: '/api/redash/query/51/new',
     host: 'wmssqlapi-b:3002', //谌珂的质检系统查询框码
     rewriteUrl: (path) => {return '/wms/runMUSsql/querywmsv1fruitbatchV2/run'}
   },
   {
     url: '/drivers/*',
-    host: 'tmsbase:3000', //tmsbase司机服务
+    host: 'tmsbase-mysql.dc-tms:3000', //tmsbase司机服务
   },
   {
     url: '/tasks/*',
-    host: 'tmsbase:3000', //tmsbase任务服务
+    host: 'tmsbase-mysql.dc-tms:3000', //tmsbase任务服务
   },
   {
     url: '/acts/*',
-    host: 'tmsbase:3000', //tmsbase扫码服务
+    host: 'tmsbase-mysql.dc-tms:3000', //tmsbase扫码服务
   },
   {
     url: '/sites/*',
-    host: 'tmsbase:3000', //tmsbase站点服务
+    host: 'tmsbase-mysql.dc-tms:3000', //tmsbase站点服务
   },
   {
     method: 'post',

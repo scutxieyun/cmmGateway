@@ -13,6 +13,10 @@ exports.rules = [
     rewriteUrl: (path) => {return '/linesch/driverassignment/query'}
   },
   {
+    url: '/datahubWeb/WMSSOAP/FLUXWS', //因为专用富勒网关不完善，用这个透明网关临时替换
+    host: 'http://flux-wms.test.pagoda.com.cn:8081'
+  },
+  {
     method: 'post',
     url: '/api/linesch/transinvs/querydriver',
     host: '10.8.4.107:80'
