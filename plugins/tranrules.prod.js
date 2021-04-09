@@ -23,11 +23,33 @@ exports.rules = [
     host: 'wmssqlapi-b:3002', //为了不影响大生鲜订单轮询，使用B服务
     rewriteUrl: (path) => {return '/wms/runMUSsql/getConsigneesDropIdWOPagoda/run'} //0203 为了减少司机抵触，只返回大生鲜框码
   },
+    {
+    method: 'post',
+    url:'/api/carton/getConsigneesDropIdWOPagoda',//给扫码APP获取司机当天应扫码任务, 只有大生鲜
+    host: 'wmssqlapi-b:3002',
+    rewriteUrl: (path) => {return '/wms/runMUSsql/getConsigneesDropIdWOPagoda/run'}
+  },
+  {
+    method: 'post',
+    url:'/api/carton/getConsigneesDropIdPostTag',//给扫码APP获取司机当天应扫码任务， 广州模式
+    host: 'wmssqlapi-b:3002',
+    rewriteUrl: (path) => {return '/wms/runMUSsql/getConsigneesDropIdPostTag/run'}
+  },
+  {
+    method: 'post',
+    url:'/api/carton/getDropIdDetail',//给运营查询框码明细
+    host: 'wmssqlapi-b:3002',
+    rewriteUrl: (path) => {return '/wms/runMUSsql/getDropIdDetail/run'}
+  },
   {
     method: 'post',
     url: '/api/redash/query/51/new',
     host: 'wmssqlapi-b:3002', //谌珂的质检系统查询框码
     rewriteUrl: (path) => {return '/wms/runMUSsql/querywmsv1fruitbatchV2/run'}
+  },
+  {
+    url: '/dropids/*',
+    host: 'tmsbase.dc:3000', //tmsbase扫码服务
   },
   {
     url: '/drivers/*',

@@ -8,6 +8,11 @@ exports.rules = [
   },
   {
     method: 'post',
+    url: '/api/linesch/transinvs/querydriver',
+    host: 'tmsbackend3:3000'
+  },
+  {
+    method: 'post',
     url: '/api/redash/query/41',
     host: 'dcbigscreen:3000'
     //wms/runMUSsql/querywmsv1fruitbatch/run
@@ -45,6 +50,12 @@ exports.rules = [
     url:'/api/carton/getConsigneesDropId',//给扫码APP获取司机当天应扫码任务
     host: 'wmssqlapi:3002',
     rewriteUrl: (path) => {return '/wms/runMUSsql/getConsigneesDropId/run'}
+  },
+  {
+    method: 'post',
+    url:'/api/carton/getDropIdDetail',//给运营查询框码明细
+    host: 'wmssqlapi:3002',
+    rewriteUrl: (path) => {return '/wms/runMUSsql/getDropIdDetail/run'}
   },
   {
     method: 'post',

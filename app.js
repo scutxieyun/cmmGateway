@@ -14,10 +14,10 @@ const token = require('./routes/token')
 onerror(app)
 
 // middlewares
-/*app.use(bodyparser({
+app.use(bodyparser({
   enableTypes:['json', 'form', 'text', 'xml']
 }))
-app.use(json())*/
+app.use(json())
 app.use(logger())
 app.use(require('koa-static')(__dirname + '/public'))
 app.use(cas)

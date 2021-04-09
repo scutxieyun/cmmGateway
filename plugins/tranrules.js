@@ -74,7 +74,7 @@ exports.rules = [
     url: '/woms/api/orders',
     method: 'post',
     host: 'localhost:3000',
-    rewriteUrl: (path) => {return '/orders/api/orders'},
+    rewriteUrl: (path) => {return '/api/raworders'},
   }
 ]
 exports.whitelist = [/\/api\/test\/.*/]
