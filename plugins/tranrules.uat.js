@@ -13,6 +13,11 @@ exports.rules = [
   },
   {
     method: 'post',
+    url: '/api/linesch/transinvs/querydc',
+    host: 'tms-test:3000'
+  },
+  {
+    method: 'post',
     url: '/api/redash/query/41',
     host: 'dcbigscreen:3000'
     //wms/runMUSsql/querywmsv1fruitbatch/run
@@ -53,6 +58,12 @@ exports.rules = [
   },
   {
     method: 'post',
+    url:'/api/carton/getConsigneesDropId-pwms',//给扫码APP获取司机当天应扫码任务
+    host: 'http://39.108.1.180:7023',
+    rewriteUrl: (path) => {return '/wms/internal/query_array/TMS_Scan_GetConsigneeCartons'}
+  },
+  {
+    method: 'post',
     url:'/api/carton/getDropIdDetail',//给运营查询框码明细
     host: 'wmssqlapi:3002',
     rewriteUrl: (path) => {return '/wms/runMUSsql/getDropIdDetail/run'}
@@ -68,12 +79,6 @@ exports.rules = [
     url:'/api/carton/getConsigneesDropIdPostTag',//给扫码APP获取司机当天应扫码任务， 广州模式
     host: 'wmssqlapi:3002',
     rewriteUrl: (path) => {return '/wms/runMUSsql/getConsigneesDropIdPostTag/run'}
-  },
-  {
-    method: 'post',
-    url: '/api/redash/query/51/new',
-    host: 'wmssqlapi-b:3002', //谌珂的质检系统查询框码
-    rewriteUrl: (path) => {return '/wms/runMUSsql/querywmsv1fruitbatchV2/run'}
   },
   {
     url: '/drivers/*',
